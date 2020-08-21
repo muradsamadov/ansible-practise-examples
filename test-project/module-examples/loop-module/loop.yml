@@ -1,0 +1,14 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: create multiple directories in a loop
+      file:
+        path: "$HOME/{{ item }}"
+        state: directory
+      loop:
+        - test_directory1
+        - test_directory2
+        - test_directory3
+
+## bu halda gedir home dir altinda loop da qeyd olunan btn dir-i yaradir

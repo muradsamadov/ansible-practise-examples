@@ -1,0 +1,18 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: ensure a directory exists  ## qeyd olunan yeni $HOME altinda "test_directory" yaradir
+      file:
+        path: $HOME/test_directory
+        state: directory
+      
+    - name: change directory permissions  ## owner ve permissionlari deyisirem
+      file:
+        path: $HOME/test_directory
+        state: directory
+        owner: root  ## owner olaraq root qoyuram
+        group: root  ## qrup olaraq root qoyuram
+        mode: 0755  ## permission olaraq 755 qoyuram
+      become: true  ## bu ise deyesen root useri ile icra etmek ucundur
+

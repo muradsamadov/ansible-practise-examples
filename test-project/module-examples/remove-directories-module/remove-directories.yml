@@ -1,0 +1,14 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: ensure a directory exists  ## qeyd olunan yeni $HOME altinda "test_directory" yaradir
+      file:
+        path: $HOME/test_directory
+        state: directory
+      
+    - name: remove directory  ## bu ise yaradilan "test_directory" silir
+      file:
+        path: $HOME/test_directory
+        state: absent
+

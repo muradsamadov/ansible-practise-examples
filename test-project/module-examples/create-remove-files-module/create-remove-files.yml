@@ -1,0 +1,15 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: ensure file exist  ## ilk once home dir daxilinde "test_file" adinda fayl yaradir
+      file:
+        path: $HOME/test_file
+        state: touch  ## bu komanda ile yaradir fayl
+      
+    - name: remove file  ## bu hissede ise yaradilan "test_file" i silir
+      file:
+        path: $HOME/test_file
+        state: absent  ## bu komanda ile silir
+        
+

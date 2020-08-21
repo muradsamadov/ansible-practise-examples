@@ -1,0 +1,6 @@
+-
+  name: Test connectivity to ansible-target servers  ## playbook name
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: Ping test  ## task name
+      ping:  ## ping test

@@ -1,0 +1,7 @@
+-
+  name: Add DNS server to resolv.conf  ## playbook name
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - lineinfile:  ## lineinfile ile hemin fayla qeyd olunan line i elave edirsen. Bu daha optimal variantdi
+        path: /etc/resolv.conf
+        line: 'nameserver 8.8.8.8'

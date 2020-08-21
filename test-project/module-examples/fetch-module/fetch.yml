@@ -1,0 +1,16 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: ensure file exists  ## ilk once home dir daxilinde "test_file" adinda fayl yaradir
+      file:
+        path: $HOME/test_file
+        state: touch  ## bu komanda ile yaradir fayl
+      
+    - name: fetch test_file ## serverde yaradilan "test_file" i copy edir lokal hosta
+      fetch:
+        src: $HOME/test_file  ## hemin "test_file" hardadir yeniki hansi fayl copy olunacaq lokala onu qeyd edirik path kimi  
+        dest: fetched/  ## lokalda hemin fayl hara yazilacaq onu qeyd edirik, burada "fetched" dir-dir. yeniki adini bele qoysun ve "test_file" i bura copy etsin
+        flat: true
+        
+

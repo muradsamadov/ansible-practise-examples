@@ -1,0 +1,16 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: ensure file exists  ## ilk once home dir daxilinde "test_file" adinda fayl yaradir
+      file:
+        path: $HOME/test_file
+        state: touch  ## bu komanda ile yaradir fayl
+      
+    - name: create symlink to test_file  ## bu hissede softlink yaradiriq
+      file:
+        src: $HOME/test_file  ## hansi faylin softlinki cixarilacaq
+        dest: $HOME/test_file_link  ## hem "test_file" in "test_file_link" adli soft linki cixarilacaq ve home folderine
+        state: link
+        
+

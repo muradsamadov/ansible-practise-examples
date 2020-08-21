@@ -1,0 +1,8 @@
+-
+  name: Copy file to target servers  ## playbook name
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: Copy file  ## task name
+      copy:  ## ping test
+        src: /tmp/test-file.txt
+        dest: /tmp/test-file.txt
