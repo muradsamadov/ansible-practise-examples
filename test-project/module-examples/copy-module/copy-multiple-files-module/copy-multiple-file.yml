@@ -1,0 +1,14 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: copy file to remote host  ## bunun ile lokalda olan fayllari remote hosta copy edirik
+      copy:
+        src: "{{ item }}"  ## variable istifade etdiyimize gore asagida loop da qeyd olunan "test_file ve test_file2" fayllarindan istifade edirik
+        dest: $HOME/{{ item }}  ## destination olaraq ise istifadeci home dir-a gonderirik ve adini item olaraq isareliliyirikki adini faylin adina uygun qoysun
+      loop:  ## loop ile dovr edirik
+        - test_file
+        - test_file2
+
+        
+

@@ -1,0 +1,12 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: copy file to remote host  ## bunun ile lokalda olan "test_file" i remote hosta copy edirik
+      copy:
+        src: test_file  ## lokal hostda olan "test_file" fayli copy edirik
+        dest: $HOME/test_file  ## bu ise remote hostdur bura cpoy edeceyik
+      
+
+        
+

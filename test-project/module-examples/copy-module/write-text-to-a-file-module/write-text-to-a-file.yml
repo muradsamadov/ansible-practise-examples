@@ -1,0 +1,8 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: write content to file  ## bu halda remote hostda olan "test_file" faylini tapir ve yaxud hemin fayl movcud deyilse onu yaradir ve sonraki merhelede ise onun daxiline asagida qeyd olunanlari yazir
+      copy:
+        dest: $HOME/test_file  ## remote hostda olan fayl
+        content: "Hello, World!\n"  ## remote hostda olan fayla bunlari yaziriq

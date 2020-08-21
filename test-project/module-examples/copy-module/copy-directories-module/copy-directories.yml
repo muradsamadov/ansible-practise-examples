@@ -1,0 +1,11 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: copy directory to remote host  ## bunun ile lokalda olan direktoriyani remote hosta copy edirik
+      copy:
+        src: test_dir  ## lokalda olan direktoriya, eger burada "test_dir/" qoysa idik onda hemin folderin yalniz altindakilar copy olacaqdi
+        dest: $HOME  ## remote hostda hara copy olunacaq yer
+
+        
+

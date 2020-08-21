@@ -1,0 +1,15 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: copy file to remote host  ## bunun ile lokalda olan "my_app.conf" i remote hosta copy edirik
+      copy:
+        src: my_app.conf  ## lokal hostda olan "my_app.conf" fayli copy edirik
+        dest: /etc/my_app.conf  ## bu ise remote hostdur bura copy edeceyik
+        owner: root  ## copy edilen faylin owneri
+        group: root  ## copy edilen faylin group owneri
+        mode: 0600  ## copy edilen faylin permissionu
+      become: true
+
+        
+
