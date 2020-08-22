@@ -1,0 +1,9 @@
+-
+  name: start and stop services
+  hosts: all
+  tasks:
+    - service: name=httpd state=started
+      when: ansible_host == "192.168.24.2"
+
+    - service: name=sshd state=started
+      when: ansible_host == "192.168.24.3"

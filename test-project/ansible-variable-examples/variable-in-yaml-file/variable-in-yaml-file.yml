@@ -1,0 +1,27 @@
+-
+  name: install tomcat server
+  hosts: all  
+  become: true
+  vars:  ## vars yeniki variables. lap basda variable kimi qeyd edirsen. kod hissede ise sade sekilde variableleri yazirsan
+    - tomcat_url: http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.57/bin/apache-tomcat-8.5.57.tar.gz  ## tomcat_url adli variabla
+    - tomcat_package: apache-tomcat-8.5.57   ##  tomcat_package adli variable
+  
+  tasks:
+    - name: install java  ## java son paketi yum install edir
+      yum:
+        name: java  
+        state: latest
+
+    - name: download tomcat server packages
+      get_url:
+        url: "{{ tomcat_url }}"  ## yuxarida qeyd olunan variableni bu formada qeyd edirik ve get_url ile hemin url i download edir
+        dest: /usr/local
+
+    - name: extract tomcat packages
+      unarchive:
+        src: /usr/local/{{ tomcat_package }}.tar.gz  ## yuxarida qeyd olunan variableni qeyd edirik ve unarchive ile paketi arxivden cixarir
+        dest: /usr/local
+        remote_src: yes
+
+    - name: start tomcat services
+      shell: nohup /usr/local/{{ tomcat_package }}/bin/startup.sh  ## bu komanda ile ise scripti icra edirik

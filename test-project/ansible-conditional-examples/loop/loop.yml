@@ -1,0 +1,9 @@
+-
+  name: install packages
+  hosts: all
+  tasks:
+    - yum: name='{{ item }}' state=present  ## bu halda item ile qeyd edirsen, yeniki loop a dusur gedir asagida bir-bir item in yerine qoyur , yeniki yum install wget ve s.
+      with_items:
+        - haproxy
+        - wget
+        - lsof
