@@ -1,0 +1,14 @@
+-
+  name: create a file
+  hosts: all  
+  tasks:
+    - name: file1 created
+      file:
+        path: $HOME/file1
+        state: touch
+        mode: 0755
+      register: file1_var  ## klient hostda yeni bir fayl yaradaq və nəticəni “register” modulu vasitəsilə dəyişən qiyməti təyin edək
+    
+    - name: file1 debug  ##  Sonra həmin dəyişənin qiymətini “debug” modulu vasitəsilə ekrana çıxaraq
+      debug: msg="file1 yeni faylinin neticeleri {{ file1_var }}"
+  

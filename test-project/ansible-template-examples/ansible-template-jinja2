@@ -1,0 +1,38 @@
+Template — Klient hostlarda konfiqurasiya zamanı fərqli parametrlər təyin etmək tələbi yarana bilər. Hər bir host üçün statik konfiqurasiya faylı yaratmaq olar, lakin bu həm vaxt həm də efektivlik baxımından əlverişli deyildir. Bu zaman şablonlar(templates) köməyə gəlir. Template fayllar konfiqurasiya parametrlərini özündə birləşdirir, parametr qiymətləri isə dəyişənlər formasında hər hosta uyğun olaraq qiymətlər alır. Sadə dildə desək, playbook-un icrası zamanı qoyulan tapşırıq şərtlərindən asılı olaraq, tapşırıq hansı hostda icra olunursa, dəyişənlər həmin hostun dəyişən qiymətlərini alır. Template fayllar “.j2” Jinja2 formatında olur. Jinja2 Python proqramlaşdırma dilində olan şablonizatordur. Jinja2 vasitəsilə nəinki sadə parametrlərin dəyişdirilməsi, həmçinin dövrlər yaratmaq, makroslar yazmaq və s. daha mürəkkəb əməliyyatları yerinə yetirmək mümkündür. Şablonizatorda dəyişənlər {{vars}} formasında göstərilir. Playbook işə salınarkən Ansible j2 faylını oxuyur və icra olunduğu klient hostda, həmin hosta aid olan dəyişən qiymətlərini təyin edir. Sadə bir praktiki misal üzərində şablonizatorun işini göstərməyə çalışaq. Tutaq ki, sizin 2 veb serveriniz var. Hər ikisi üçün fərqli kontentli index.html fayl yaratmalısınız. Hər bir klient hosta veb müraciət zamanı, öz host adı qeyd olunmalıdır. Yəni hər klientin index.html-də öz host adını qeyd etməlisiniz. Bunun üçün şablon faylı yaradaraq, daha öncəki paylaşımlarda qeyd etdiyimiz kimi playbook işə düşərkən klient hostdan əldə olunan “ansible_hostname” dəyişəninin qiymətini mənimsətməliyik. Əvvəlcə setup modulu vasitəsilə istifadə edəcəyimiz dəyişəni dəqiqləşdirək. Nümunəmizdə “ansible_hostname” dəyişənindən istifadə edəcəyik.
+
+# sudo ansible all -i inventory.txt -m setup -a "filter=*hostname*"
+ansible-target-1 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_hostname": "ansible-target-1"
+    }, 
+    "changed": false
+}
+ansible-target-2 | SUCCESS => {
+    "ansible_facts": {
+        "ansible_hostname": "ansible-target-2"
+    }, 
+    "changed": false
+
+
+Serverdə Jinja2 formatında index.j2 adlı şablon faylı yaradaq və dəyişəni qeyd edək. Diqqət etmək lazımdır ki, dəyişənlər şablon daxilində {{ }} içərisində qeyd olunur.
+
+# echo "My hostname is {{ ansible_hostname }}" > index.j2
+
+Lokalda yaratdığımız şablon faylını klient hostlara kopyalamağ üçün playbook yaradaq. (yml fayli hal-hazirki dir de ansible-jinja2.yml adinda qeyd olunub)
+
+
+
+Playbook-a nəzər salaq.
+
+    Dəyişənlər haqda daha öncə öyrəndiklərimizi praktikada tətbiq etmək üçün “vars:” vasitəsilə 2 dəyişən təyin edirik.
+    Yeni tapşırıq yaradırıq və bu hissədə “template:” modulunu qeyd edirik. Bu modulun 2 parametrindən istifadə edəcəyik. Daha öncə istifadə etdiyimiz “copy” moduluna çox oxşardır. Lakin fərqləri ondan ibarətdir ki, copy modulu lokal faylı klient hosta birmənalı olaraq kopyalayır, template modulu isə lokal(jinja) faylı oxuyub, fayldakı dəyişənlərə uyğun qiymətləri təyin edəcək. Template faylın lokal və təyinat yerini göstərmək üçün yuxarıda “vars:” vasitəsilə təyin etdiyimiz dəyişən qiymətlərindən istfadə edirik.
+    Növbəti tapşırıqda apache servisimizi restart edirik ki, dəyişikliklər servisə tətbiq olunsun.Playbook-u işə salaq və nəticəyə baxaq.
+
+
+
+
+Hər iki veb serverimizin fərqli kontentə malik olduğunu cli brauzer vasitəsilə yoxlayıb dəqiqləşdirə bilərik:
+
+# curl http://ansible-target-1/index.html
+
+Template modulunun bir sıra parametrləri vardır. Şablon fayl əsasında yaranan yeni faylın istifadəçi privlegiyalarını, selinux kontenti və s. parametrlərini idarə etmək olar. Qısa olaraq, daha çox işinizə yarayacaq “backup:” parametri haqda danışaq. Məsələn, sizin bir sshd_config.j2 şablon faylınız var və bir neçə klient hostda bu şablon əsasında sshd_config konfiqurasiya faylını yeniləmək tapşırığınız var. Klientlərdəki köhnə “sshd_config” faylını itirməmək üçün, əlavə play yaza və ya manual olaraq kopyasını yarada bilərsiniz. Məsləni daha asan həll etmək üçün template modulu daxilində “backup: yes” parametrini təyin etmək kifayətdir. Bu parametr klient hostdakı sshd_config faylını yeniləməzdən öncə, həmin faylın cari orijinalı ilə kopyalamaq istədiyimiz yeni faylın kontentlərini müqayisə edir. Əgər fərqlilik varsa orijinal faylın rezerv kopyasını çıxarır və klient hostun özündə saxlayır. Artıq bundan sonra template əsasında yaranmış yeni sshd_config faylı orijinalı əvəzləyir.

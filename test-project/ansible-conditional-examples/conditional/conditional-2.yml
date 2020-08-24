@@ -1,0 +1,13 @@
+-
+  name: test play
+  hosts: all
+  tasks:
+    - name: apache started  ## bu halda qeyd olunan 24.2hostundan apache servisini start edir
+      service: name=httpd state=started
+      when: ansible_host == "192.168.24.2"
+
+    - name: copy files  ## bu halda ise 24.3 hostundan qeyd olunan fayli copy edir
+      copy:
+        src: test_file
+        dest: /tmp
+      when: ansible_host == "192.168.24.3"

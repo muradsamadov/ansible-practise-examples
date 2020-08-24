@@ -1,0 +1,19 @@
+- 
+  hosts: all
+  become: yes
+  vars:  ## variable teyin edirik
+    src_dir: .
+    dest_dir: /var/www/html
+  tasks:
+    - name: jinja template test  
+      template:  ## bu halda template den istifade edirik
+        src: "{{src_dir}}/index.j2"  ## variable hossesinde qeyd olunan dirda da "index.j2" fayli vardir. Bunu biz manual olaraq yaratmisiq
+        dest: "{{dest_dir}}/index.html"  ## bu ise remote hostda hara ve hansi adda copyalanacagi ile bagilidir
+        backup: yes  ## bu parametr ile eger hemin fylda nese deyisiklik olunacaqs ele hemin dir-da da hemin faylin backupni cixarir
+      
+    - name: httpd restart  ## apacheni restart edir
+      service:
+        name: httpd
+        state: restarted
+
+## etrafli bu direktoriyada olan ansible-template-jinja2 faylinda yazilib

@@ -1,0 +1,13 @@
+Facts — Faktlar ansible idarəedici serverin klient host-a qoşulduqdan sonra topladığı, həmin klientin sistem parametrləridir. Bu parametrlərə, klient hostun ip ünvanı, əməliyyat sisteminin versiyası, kernel versiyası, və s. bu kimi məlumatlar daxildir. Toplanan parametrlər idarəedici tərəfindən, sonradan dəyişənlər kimi istifadə olunaraq klient host üzərində konfiqurasiya üçün asanlıq yaradır. Faktları əldə etmək həm ad-hoc komanda ilə həm də playbook vasitəsilə mümkündür. Komanda vasitəsilə “setup” modulundan istifadə edərək klient məlumatlarını əldə edək:
+
+# ansible all -i inventory.txt -m setup
+
+Cavab olaraq JSON formatda klient hostun sistem parametrləri əks olunur(siyahı kifayət qədər uzundur). Nəticəni qısaltmaq və yalnız bizə lazım olan məlumatları əldə etmək üçün “filter” argumentindən istifadə etmək mümkündür:
+
+# ansible client1 -m setup -a "filter=*ipv4"
+
+Nəticə bizə klient sistemin ipv4 şəbəkə parametrlərini cavab olaraq qaytaracaqdır. Daha öncə qeyd etdiyimiz kimi, playbook vasitəsilə klientin məlumatlarının toplanması da mümkündür. Default olaraq playbook hər dəfə tapşırıqları istifadə etməyə başlayarkən system məlumatlarını əldə edir. Bu parametri, playbook-da “collect_facts” parametrinə “true” və ya “false” qiymətlərini verməklə deaktiv(aktiv) edə bilərsiniz. Faktların əldə olunmasını deaktiv etməyə səbəb, köhnə əməliyyat sistemlərinə müraciət zamanı vaxt ləngiməsidir. Lakin nəzərə almaq lazımdır ki, “collect_facts” parametri deaktiv edilərsə, həmin klientin sistem parametrlərindən cari playbookda istifadə etmək mümkün olmayacaqdır.
+
+Misal ucun:
+
+# ansible client1 -m setup -a "filter=*hostname"
