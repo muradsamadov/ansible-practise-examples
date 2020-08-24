@@ -1,0 +1,16 @@
+-
+  name: run tasks on all hosts
+  hosts: all  ## connectivity hosts
+  tasks:  ## tasks
+    - name: install packeges "with_items"
+      yum:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - lsof
+        - nano
+        - httpd
+        - vim
+        - haproxy
+
+## bunun haqqinda etrafli melumat bu dir-de loop faylinda verilib
