@@ -1,0 +1,14 @@
+-
+  name: Deploy a web application  ## ola bilerki bir nece dene error versin play edende amma ki bu ansinlenin eroru olmayacaq play edende cixan errorlara baxib inetden arasidirb baxib server terefden bezi paketleri install etmek lazimdir
+  hosts: all
+  roles:
+    - python
+    - mysql_db
+    - flask_web
+
+
+
+
+    
+    
+

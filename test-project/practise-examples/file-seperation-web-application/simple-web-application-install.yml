@@ -1,0 +1,24 @@
+-
+  name: Deploy a web application  ## ola bilerki bir nece dene error versin play edende amma ki bu ansinlenin eroru olmayacaq play edende cixan errorlara baxib inetden arasidirb baxib server terefden bezi paketleri install etmek lazimdir
+  hosts: all
+  tasks:
+    - name: Install all required dependencies
+      apt: name={{ item }} state=installed
+      with_items:
+        - python
+        - python-setuptools
+        - python-dev
+        - python-essential
+        - python-pip
+        - python-mysqldb
+
+    - include: tasks/deploy-db.yml  ## artiq bu hissede olan tasklar qeyd olunubki hansi dirdedi ve bunu "include" optionu ile gosterirsen
+    - include: tasks/deploy-web.yml
+
+
+
+
+
+    
+    
+

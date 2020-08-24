@@ -1,0 +1,22 @@
+    - name: Install Mysql database
+      apt: name={{ item }} state=installed
+      with_items:
+        - mysql-server
+        - mysql-client
+
+    - name: Start Mysql service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Create application database
+      mysql_db: name={{ db_name }} state=present  ## qeyd olunan "db_name" variable "group_vars" dir in altindadir ve elecede asagidakilar
+
+    - name: Create database user
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_user_password }}"
+        priv: '*.*:ALL'
+        state: present
+        host: '%'
