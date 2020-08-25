@@ -6,7 +6,4 @@
       copy:
         src: test_file  ## lokal hostda olan "test_file" fayli copy edirik
         dest: $HOME/test_file  ## bu ise remote hostdur bura cpoy edeceyik
-      
-
-        
 
