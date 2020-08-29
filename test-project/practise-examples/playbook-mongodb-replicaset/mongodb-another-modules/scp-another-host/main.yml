@@ -1,0 +1,7 @@
+- name: File copy test
+  hosts: all
+  tasks:
+      
+    - name: Copy File to Local Machine
+      shell: sshpass -p 'root' scp  /opt/mongo/mongo.key root@192.168.24.3:/opt/mongo
+      when: ansible_host == "192.168.24.2"
