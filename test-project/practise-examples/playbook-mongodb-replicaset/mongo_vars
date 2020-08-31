@@ -1,0 +1,3 @@
+mongo-primary-hostname: mongo-primary
+mongo-standby-hostname: mongo-standby
+mongo-arbiter-hostname: mongo-arbiter

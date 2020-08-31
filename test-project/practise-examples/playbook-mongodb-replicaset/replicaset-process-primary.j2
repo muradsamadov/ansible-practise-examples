@@ -1,0 +1,8 @@
+rs.initiate()
+rs.add("mongo-standby")
+rs.addArb("mongo-arbiter")
+rs.conf()
+rs.status()
+rs.isMaster()
+use demo
+for (var i = 0; i <= 10; i++) db.exampleCollection.insert( { x : i } )
