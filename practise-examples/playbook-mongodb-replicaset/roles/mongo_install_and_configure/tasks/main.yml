@@ -1,0 +1,60 @@
+---
+  - name: Copy mongodb repo file to nodes
+    copy:
+      src: mongodb-org-4.4.repo
+      dest: /etc/yum.repos.d/mongodb-org-4.4.repo
+
+  - name: Install the latest version of mongodb
+    yum:
+      name: mongodb-org
+      state: latest
+
+  - name: Create a directory if it does not exist
+    file:
+      path: /opt/mongo
+      state: directory
+    ignore_errors: yes
+
+  - name: openssl key file generate
+    shell: openssl rand -base64 756 > /opt/mongo/mongo.key
+    when: ansible_host == "192.168.24.2"
+
+  - name: Copy openssl key file to standby node
+    shell: sshpass -p ""{{standby_node_ssh_password}}"" scp  /opt/mongo/mongo.key root@192.168.24.3:/opt/mongo
+    when: ansible_host == "192.168.24.2"
+
+  - name: Copy openssl key file to arbiter node
+    shell: sshpass -p ""{{arbitery_node_ssh_password}}"" scp  /opt/mongo/mongo.key root@192.168.24.4:/opt/mongo
+    when: ansible_host == "192.168.24.2"
+
+  - name: Change file ownership, group and permissions
+    file:
+      path: /opt/mongo/mongo.key
+      owner: mongod
+      group: mongod
+      mode: '0400'
+
+  - name: Start and enable service mongod
+    service:
+      name: mongod
+      state: started
+      enabled: yes
+
+  - name: copy createUsers script
+    template: src=create-user-password.j2 dest=/tmp/createUsers.js
+
+  - name: create users in mongodb
+    shell: mongo  < /tmp/createUsers.js
+    ignore_errors: yes
+
+  - name: Copy mongod.conf file to nodes
+    template:  
+      src: mongod.conf
+      dest: /etc/mongod.conf
+      backup: yes
+    become: yes
+
+  - name: Restart service mongod
+    service: 
+      name: mongod
+      state: restarted

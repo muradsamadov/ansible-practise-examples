@@ -1,0 +1,9 @@
+---
+  - name: Configuring Mongodb replication
+    hosts: all
+    gather_facts: yes
+    tasks:
+    roles:
+      - modify_host_file
+      - mongo_install_and_configure
+      - mongo_replicaset_configure
